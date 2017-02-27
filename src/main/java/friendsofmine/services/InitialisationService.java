@@ -1,8 +1,7 @@
-package service;
+package friendsofmine.services;
 
 import friendsofmine.domain.Activite;
 import friendsofmine.domain.Utilisateur;
-import org.apache.tomcat.util.modeler.Util;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,8 +11,17 @@ import java.util.ArrayList;
  */
 @Service
 public class InitialisationService {
+
     private ArrayList<Activite> listActivite;
     private ArrayList<Utilisateur> listUtilisateur;
+
+    public ArrayList<Activite> getListActivite() {
+        return listActivite;
+    }
+
+    public ArrayList<Utilisateur> getListUtilisateur() {
+        return listUtilisateur;
+    }
 
     public void initDonnees() {
         this.listActivite = new ArrayList<Activite>();

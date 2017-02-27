@@ -15,8 +15,30 @@ public class Utilisateur {
     @Email
     @NotNull
     private String mail;
+
+    public String getMail() {
+        return mail;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public String getSexe() {
+        return sexe;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
     @NotNull
     @Size(min=1)
+
     private String nom;
     @NotNull
     @Size(min=1)

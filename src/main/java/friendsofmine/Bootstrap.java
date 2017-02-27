@@ -1,7 +1,8 @@
 package friendsofmine;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import service.InitialisationService;
+import friendsofmine.services.InitialisationService;
 
 import javax.annotation.PostConstruct;
 
@@ -10,10 +11,11 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class Bootstrap {
-    private InitialisationService initService;
+    @Autowired
+    private InitialisationService initialisationService;
 
     @PostConstruct
     public void init() {
-        initService.initDonnees();
+        initialisationService.initDonnees();
     }
 }

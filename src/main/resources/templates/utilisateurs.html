@@ -2,10 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Utilisateurs</title>
 </head>
 <body>
-
+    <ul th:each="utilisateur : ${utilisateurs}">
+        <li th:text="${utilisateur.prenom}"></li>
+        <!--<li th:text="${utilisateur.nom}"></li>
+        <li th:text="${utilisateur.sexe}"></li>
+        <li th:text="${utilisateur.date}"></li>-->
+    </ul>
 </body>
 </html>
