@@ -15,9 +15,14 @@ public class ActiviteController {
     @Autowired
     private InitialisationService initialisationService;
 
+    public InitialisationService getInitialisationService() {
+        return initialisationService;
+    }
+
     @RequestMapping(value = "/activites", method = RequestMethod.GET)
     public String list(Model model) {
         model.addAttribute("activites", initialisationService.getListActivite());
         return "activites";
     }
+
 }
