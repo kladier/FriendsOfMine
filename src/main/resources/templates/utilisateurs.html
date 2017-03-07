@@ -6,11 +6,12 @@
     <title>Utilisateurs</title>
 </head>
 <body>
+    <h2>Liste des Utilisateurs</h2>
     <ul th:each="utilisateur : ${utilisateurs}">
         <li th:text="${utilisateur.prenom}"></li>
-        <!--<li th:text="${utilisateur.nom}"></li>
+        <li th:text="${utilisateur.nom}"></li>
         <li th:text="${utilisateur.sexe}"></li>
-        <li th:text="${utilisateur.date}"></li>-->
+        <li th:text="${utilisateur.date}"></li>
     </ul>
 </body>
 </html>

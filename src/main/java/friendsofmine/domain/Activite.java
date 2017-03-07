@@ -10,6 +10,15 @@ public class Activite {
     @NotNull
     @Size(min=1)
     private String titre;
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public String getDescriptif() {
+        return descriptif;
+    }
+
     private String descriptif;
 
     public Activite(String titre, String descriptif) {
