@@ -1,7 +1,13 @@
 package friendsofmine.domain;
 
 import org.hibernate.validator.constraints.Email;
+import javax.persistence.Id;
 
+import org.springframework.data.annotation.Persistent;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.rmi.CORBA.Util;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -11,15 +17,29 @@ import java.util.Date;
 /**
  * Created by what on 27/02/17.
  */
+@Entity
 public class Utilisateur {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id ;
+    public Long getId () {
+        return id ;
+    }
+    private void setId ( Long id ) {
+        this.id = id ;
+    }
+
     @Email
     @NotNull
     private String mail;
 
-    public String getMail() {
+    public String getEmail() {
         return mail;
     }
 
+    public void setEmail(String email) {
+        this.mail = email;
+    }
     public String getNom() {
         return nom;
     }
@@ -47,6 +67,10 @@ public class Utilisateur {
     @Pattern(regexp="[MF]")
     private String sexe;
     private Date date;
+
+    public Utilisateur() {
+
+    }
 
     public Utilisateur(String nom, String prenom, String mail, String sexe, Date date) {
         this.mail = mail;
