@@ -5,9 +5,11 @@ import friendsofmine.domain.Utilisateur;
 import friendsofmine.repositories.ActiviteRepository;
 import friendsofmine.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 
 /**
  * Created by what on 07/03/17.
@@ -42,5 +44,12 @@ public class ActiviteService {
 
     public ActiviteRepository getActiviteRepository() {
         return activiteRepository;
+    }
+
+    public ArrayList<Activite> findAllActivites() {
+        Iterable<Activite> activites = activiteRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC,"titre")));
+        ArrayList<Activite> activitesList = new ArrayList<>();
+        activites.forEach(activitesList::add);
+        return activitesList;
     }
 }

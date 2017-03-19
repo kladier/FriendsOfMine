@@ -2,8 +2,7 @@ package friendsofmine;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import friendsofmine.services.InitialisationService;
-
+import friendsofmine.service.InitialisationService;
 import javax.annotation.PostConstruct;
 
 /**
@@ -17,5 +16,9 @@ public class Bootstrap {
     @PostConstruct
     public void init() {
         initialisationService.initDonnees();
+    }
+
+    public InitialisationService getInitialisationService() {
+        return initialisationService;
     }
 }

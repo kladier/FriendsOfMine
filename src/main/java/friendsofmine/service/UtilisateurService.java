@@ -3,7 +3,10 @@ package friendsofmine.service;
 import friendsofmine.domain.Utilisateur;
 import friendsofmine.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 /**
  * Created by what on 07/03/17.
@@ -31,5 +34,12 @@ public class UtilisateurService {
 
     public UtilisateurRepository getUtilisateurRepository() {
         return utilisateurRepository;
+    }
+
+    public ArrayList<Utilisateur> findAllUtilisateurs() {
+        Iterable<Utilisateur> utilisateurs = utilisateurRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC,"nom")));
+        ArrayList<Utilisateur> utilisateurList = new ArrayList<>();
+        utilisateurs.forEach(utilisateurList::add);
+        return utilisateurList;
     }
 }
