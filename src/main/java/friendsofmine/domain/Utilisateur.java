@@ -1,18 +1,17 @@
 package friendsofmine.domain;
 
 import org.hibernate.validator.constraints.Email;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 
 import org.springframework.data.annotation.Persistent;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.rmi.CORBA.Util;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -34,9 +33,10 @@ public class Utilisateur {
     @NotNull
     private String mail;
 
-    private ArrayList<Activite> activites;
+    @OneToMany(mappedBy = "responsable")
+    private Collection<Activite> activites;
 
-    public ArrayList<Activite> getActivites() {
+    public Collection<Activite> getActivites() {
         return this.activites;
     }
 
@@ -90,5 +90,10 @@ public class Utilisateur {
 
     public Utilisateur(String nom, String prenom, String mail, String sexe) {
         this(nom, prenom, mail, sexe, new Date());
+    }
+
+    public void addActivite(Activite activite) {
+        if (!activites.contains(activite))
+            activites.add(activite);
     }
 }

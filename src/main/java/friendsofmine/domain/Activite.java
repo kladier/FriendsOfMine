@@ -1,10 +1,7 @@
 package friendsofmine.domain;
 
 //import org.springframework.data.annotation.Id;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -45,6 +42,7 @@ public class Activite {
     @Size(min=1)
     private String titre;
 
+    @ManyToOne
     @NotNull
     private Utilisateur responsable;
 

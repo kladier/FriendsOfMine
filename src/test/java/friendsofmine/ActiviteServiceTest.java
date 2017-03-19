@@ -22,12 +22,16 @@ public class ActiviteServiceTest {
     @Autowired
     private ActiviteService activiteService;
 
-    private Activite act, act1;
+    private Activite act, act1, act2;
+    private Utilisateur thom = new Utilisateur("thom", "yorke", "thom@yorke.fr", "M");
+    private Utilisateur mary = new Utilisateur("mary", "yorke", "mary@yorke.fr", "F");
+
 
     @Before
     public void setup() {
-        act = new Activite("titre", "descriptif");
-        act1 = new Activite("titre1", "descriptif1");
+        act = new Activite("titre", "descriptif", thom);
+        act1 = new Activite("titre1", "descriptif1", thom);
+        act2 = new Activite("titre2", "descriptif2", mary);
         activiteService.saveActivite(act1);
     }
 
@@ -36,6 +40,34 @@ public class ActiviteServiceTest {
         assertNull(act.getId());
         activiteService.saveActivite(act);
         assertNotNull(act.getId());
+    }
+
+    @Test
+    public void testSaveActiviteSaveResponsable() {
+        assertEquals(0, mary.getActivites().size());
+        activiteService.saveActivite(act2);
+        assertEquals(1, mary.getActivites().size());
+    }
+
+    @Test
+    public void testSaveActiviteSaveResponsable2() {
+        assertEquals(1, thom.getActivites().size());
+        activiteService.saveActivite(act);
+        assertEquals(2, thom.getActivites().size());
+    }
+
+    @Test
+    public void testSaveActiviteSaveResponsable3() {
+        assertEquals(1, thom.getActivites().size());
+        activiteService.saveActivite(act1);
+        assertEquals(1, thom.getActivites().size());
+    }
+
+    @Test
+    public void testSaveActiviteAjouterActiviteAuResponsable() {
+        assertFalse(mary.getActivites().contains(act2));
+        activiteService.saveActivite(act2);
+        assertTrue(mary.getActivites().contains(act2));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -55,6 +87,7 @@ public class ActiviteServiceTest {
         assertEquals(fetched.getId(), act1.getId());
         assertEquals(fetched.getDescriptif(), act1.getDescriptif());
     }
+
 
     @Test
     @Transactional
@@ -80,4 +113,5 @@ public class ActiviteServiceTest {
     public void testTypeRepository() {
         assertThat(activiteService.getActiviteRepository(), instanceOf(PagingAndSortingRepository.class));
     }
+
 }
