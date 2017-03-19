@@ -24,7 +24,17 @@ public class Activite {
     }
 
     public Activite() {
+        this("","", null);
+    }
 
+    public Activite(String titre, String descriptif) {
+        this(titre, descriptif, null);
+    }
+
+    public Activite(String titre, String descriptif, Utilisateur responsable) {
+        this.titre = titre;
+        this.descriptif = descriptif;
+        this.responsable = responsable;
     }
 
     public void setTitre(String titre) {
@@ -35,6 +45,13 @@ public class Activite {
     @Size(min=1)
     private String titre;
 
+    @NotNull
+    private Utilisateur responsable;
+
+    public Utilisateur getResponsable() {
+        return this.responsable;
+    }
+
     public String getTitre() {
         return titre;
     }
@@ -44,11 +61,6 @@ public class Activite {
     }
 
     private String descriptif;
-
-    public Activite(String titre, String descriptif) {
-        this.titre = titre;
-        this.descriptif = descriptif;
-    }
 
     public void setDescriptif(String descriptif) {
         this.descriptif = descriptif;

@@ -12,6 +12,7 @@ import javax.rmi.CORBA.Util;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -32,6 +33,12 @@ public class Utilisateur {
     @Email
     @NotNull
     private String mail;
+
+    private ArrayList<Activite> activites;
+
+    public ArrayList<Activite> getActivites() {
+        return this.activites;
+    }
 
     public String getEmail() {
         return mail;
@@ -78,6 +85,7 @@ public class Utilisateur {
         this.prenom = prenom;
         this.sexe = sexe;
         this.date = date;
+        this.activites = new ArrayList<Activite>();
     }
 
     public Utilisateur(String nom, String prenom, String mail, String sexe) {
