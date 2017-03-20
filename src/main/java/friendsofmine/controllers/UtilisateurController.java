@@ -46,7 +46,7 @@ public class UtilisateurController {
     }
 
     @RequestMapping(value = "/utilisateur", method = RequestMethod.POST)
-    public String create(@Valid Utilisateur utilisateur, BindingResult bindingResult) {
+    public String create(Model model, @Valid Utilisateur utilisateur, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "utilisateurForm";
         }
