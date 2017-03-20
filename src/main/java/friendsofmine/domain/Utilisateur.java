@@ -4,9 +4,6 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 
-import org.springframework.data.annotation.Persistent;
-
-import javax.rmi.CORBA.Util;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -31,7 +28,7 @@ public class Utilisateur {
 
     @Email
     @NotNull
-    private String mail;
+    private String email;
 
     @OneToMany(mappedBy = "responsable")
     private Collection<Activite> activites;
@@ -41,12 +38,9 @@ public class Utilisateur {
     }
 
     public String getEmail() {
-        return mail;
+        return email;
     }
 
-    public void setEmail(String email) {
-        this.mail = email;
-    }
     public String getNom() {
         return nom;
     }
@@ -79,8 +73,32 @@ public class Utilisateur {
 
     }
 
-    public Utilisateur(String nom, String prenom, String mail, String sexe, Date date) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setActivites(Collection<Activite> activites) {
+        this.activites = activites;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public void setSexe(String sexe) {
+        this.sexe = sexe;
+    }
+
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+
+    public Utilisateur(String nom, String prenom, String email, String sexe, Date date) {
+        this.email = email;
         this.nom = nom;
         this.prenom = prenom;
         this.sexe = sexe;
@@ -88,8 +106,8 @@ public class Utilisateur {
         this.activites = new ArrayList<Activite>();
     }
 
-    public Utilisateur(String nom, String prenom, String mail, String sexe) {
-        this(nom, prenom, mail, sexe, new Date());
+    public Utilisateur(String nom, String prenom, String email, String sexe) {
+        this(nom, prenom, email, sexe, new Date());
     }
 
     public void addActivite(Activite activite) {

@@ -1,14 +1,16 @@
 package friendsofmine.controllers;
 
-import friendsofmine.service.ActiviteService;
+import friendsofmine.domain.Utilisateur;
 import friendsofmine.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.validation.Valid;
 
 /**
  * Created by what on 27/02/17.
@@ -35,5 +37,20 @@ public class UtilisateurController {
             return "error";
         }
 
+    }
+
+    @RequestMapping(value = "/utilisateur/new", method = RequestMethod.GET)
+    public String createForm(Model model) {
+        model.addAttribute("utilisateur", new Utilisateur());
+        return "utilisateurForm";
+    }
+
+    @RequestMapping(value = "/utilisateur", method = RequestMethod.POST)
+    public String create(@Valid Utilisateur utilisateur, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "utilisateurForm";
+        }
+        utilisateurService.saveUtilisateur(utilisateur);
+        return "redirect:/utilisateur/"+utilisateur.getId();
     }
 }

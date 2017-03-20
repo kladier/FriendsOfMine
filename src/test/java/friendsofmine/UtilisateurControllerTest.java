@@ -11,11 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,12 +28,13 @@ public class UtilisateurControllerTest {
     @Autowired
     private UtilisateurService utilisateurService;
 
-    private Utilisateur util;
+    private Utilisateur util, utilNonSauve;
 
     @Before
     public void setup() {
         util = new Utilisateur("Doe", "John", "john@doe.com", "M");
         utilisateurService.saveUtilisateur(util);
+        utilNonSauve = new Utilisateur("Morrissey", "Steven Patrick", "momo@rrissey.co.uk", "M");
     }
 
     @Test
@@ -66,6 +65,69 @@ public class UtilisateurControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("error"))
+                .andDo(print());
+    }
+
+    @Test
+    public void testCreateUtilisateur() throws Exception{
+        mockMvc.perform(get("/utilisateur/new"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("utilisateurForm"))
+                .andDo(print());
+    }
+
+    @Test
+    public void testCreateUtilisateurValide() throws Exception{
+        mockMvc.perform(post("/utilisateur")
+                .param("nom", utilNonSauve.getNom())
+                .param("prenom", utilNonSauve.getPrenom())
+                .param("email", utilNonSauve.getEmail())
+                .param("sexe", utilNonSauve.getSexe()))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrlPattern("/utilisateur/*"))
+                .andDo(print());
+    }
+
+    @Test
+    public void testCreateUtilisateurNomInvalide() throws Exception{
+        mockMvc.perform(post("/utilisateur")
+                .param("nom", "")
+                .param("prenom", utilNonSauve.getPrenom())
+                .param("email", utilNonSauve.getEmail())
+                .param("sexe", utilNonSauve.getSexe()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("utilisateurForm"))
+                .andExpect(content().string(Matchers.containsString("size must be between 1 and")))
+                .andDo(print());
+    }
+
+    @Test
+    public void testCreateUtilisateurPrenomInvalide() throws Exception{
+        mockMvc.perform(post("/utilisateur")
+                .param("nom", utilNonSauve.getNom())
+                .param("prenom", "")
+                .param("email", utilNonSauve.getEmail())
+                .param("sexe", utilNonSauve.getSexe()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("utilisateurForm"))
+                .andExpect(content().string(Matchers.containsString("size must be between 1 and")))
+                .andDo(print());
+    }
+
+    @Test
+    public void testCreateUtilisateurEmailInvalide() throws Exception{
+        mockMvc.perform(post("/utilisateur")
+                .param("nom", utilNonSauve.getNom())
+                .param("prenom", utilNonSauve.getPrenom())
+                .param("email", "toto")
+                .param("sexe", utilNonSauve.getSexe()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("utilisateurForm"))
+                .andExpect(content().string(Matchers.containsString("not a well-formed email address")))
                 .andDo(print());
     }
 
