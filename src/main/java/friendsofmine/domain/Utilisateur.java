@@ -59,8 +59,8 @@ public class Utilisateur {
         return sexe;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDateNaissance() {
+        return dateNaissance;
     }
 
     @NotNull
@@ -73,7 +73,7 @@ public class Utilisateur {
     @NotNull
     @Pattern(regexp="[MF]")
     private String sexe;
-    private Date date;
+    private Date dateNaissance;
 
     public Utilisateur() {
 
@@ -84,7 +84,7 @@ public class Utilisateur {
         this.nom = nom;
         this.prenom = prenom;
         this.sexe = sexe;
-        this.date = date;
+        this.dateNaissance = date;
         this.activites = new ArrayList<Activite>();
     }
 
