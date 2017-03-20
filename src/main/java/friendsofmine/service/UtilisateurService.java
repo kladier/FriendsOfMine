@@ -29,7 +29,7 @@ public class UtilisateurService {
     }
 
     public long countUtilisateur() {
-        return 0;
+        return this.utilisateurRepository.count();
     }
 
     public UtilisateurRepository getUtilisateurRepository() {
@@ -41,5 +41,9 @@ public class UtilisateurService {
         ArrayList<Utilisateur> utilisateurList = new ArrayList<>();
         utilisateurs.forEach(utilisateurList::add);
         return utilisateurList;
+    }
+
+    public void deleteUtilisateur(Long id) {
+        utilisateurRepository.delete(id);
     }
 }

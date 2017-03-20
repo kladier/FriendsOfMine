@@ -65,4 +65,20 @@ public class UtilisateurController {
             return "error";
         }
     }
+
+    @RequestMapping(value = "/utilisateur/delete/{id}", method = RequestMethod.DELETE)
+    public String delete(Model model, @PathVariable("id") Long id) {
+        Utilisateur user = utilisateurService.findOneUtilisateur(id);
+
+        if (user == null) {
+            model.addAttribute("customMessage", "L'utilisateur n'existe pas.");
+            return "error";
+        }
+        if (!user.getActivites().isEmpty()) {
+            model.addAttribute("customMessage", "Impossible. L&#39;utilisateur est responsable d&#39;activités");
+            return "error";
+        }
+        utilisateurService.deleteUtilisateur(user.getId());
+        return "redirect:/utilisateurs";
+    }
 }

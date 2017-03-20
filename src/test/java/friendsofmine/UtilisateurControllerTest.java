@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -163,6 +164,32 @@ public class UtilisateurControllerTest {
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("error"))
                 .andDo(print());
+    }
+
+    @Test
+    public void testDeleteUtilisateur() throws Exception {
+        long count = utilisateurService.countUtilisateur();
+        assertTrue(count > 0);
+        mockMvc.perform(delete("/utilisateur/delete/" + util.getId()))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/utilisateurs"))
+                .andDo(print());
+        assertEquals(count - 1, utilisateurService.countUtilisateur());
+    }
+
+    @Test
+    public void testDeleteUtilisateurAvecActivite() throws Exception {
+        long count = utilisateurService.countUtilisateur();
+        Activite act = new Activite("Football", "Le mardi soir", util);
+        activiteService.saveActivite(act);
+        assertTrue(util.getActivites().size() > 0);
+        mockMvc.perform(delete("/utilisateur/delete/" + util.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("error"))
+                .andExpect(content().string(Matchers.containsString("Impossible. L&amp;#39;utilisateur est responsable d&amp;#39;activités")))
+                .andDo(print());
+        assertEquals(count, utilisateurService.countUtilisateur());
     }
 
 }
