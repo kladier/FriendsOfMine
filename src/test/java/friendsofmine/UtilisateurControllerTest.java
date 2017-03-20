@@ -1,17 +1,25 @@
 package friendsofmine;
 
+import friendsofmine.domain.Activite;
 import friendsofmine.domain.Utilisateur;
+import friendsofmine.service.ActiviteService;
 import friendsofmine.service.UtilisateurService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.exceptions.ExceptionIncludingMockitoWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,6 +35,9 @@ public class UtilisateurControllerTest {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    private ActiviteService activiteService;
 
     private Utilisateur util, utilNonSauve;
 
@@ -128,6 +139,29 @@ public class UtilisateurControllerTest {
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("utilisateurForm"))
                 .andExpect(content().string(Matchers.containsString("not a well-formed email address")))
+                .andDo(print());
+    }
+
+    @Test
+    public void testEditUtilisateurIdValide() throws Exception{
+        Long savId = util.getId();
+        mockMvc.perform(get("/utilisateur/edit/" + savId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("utilisateurForm"))
+                .andExpect(content().string(Matchers.containsString(util.getNom())))
+                .andExpect(content().string(Matchers.containsString(util.getPrenom())))
+                .andExpect(content().string(Matchers.containsString(util.getEmail())))
+                .andExpect(model().attribute("utilisateur", hasProperty("id", is(savId))))
+                .andDo(print());
+    }
+
+    @Test
+    public void testEditUtilisateurIdInvalide() throws Exception{
+        mockMvc.perform(get("/utilisateur/edit/" + (util.getId() + 1)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("error"))
                 .andDo(print());
     }
 

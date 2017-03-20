@@ -53,4 +53,16 @@ public class UtilisateurController {
         utilisateurService.saveUtilisateur(utilisateur);
         return "redirect:/utilisateur/"+utilisateur.getId();
     }
+
+    @RequestMapping(value = "/utilisateur/edit/{id}", method = RequestMethod.GET)
+    public String editForm(Model model, @PathVariable("id") Long id) {
+        if (utilisateurService.findOneUtilisateur(id)!=null) {
+            model.addAttribute("utilisateur", utilisateurService.findOneUtilisateur(id));
+            return "utilisateurForm";
+        }
+        else {
+            model.addAttribute("customMessage", "L'utilisateur n'existe pas.");
+            return "error";
+        }
+    }
 }
