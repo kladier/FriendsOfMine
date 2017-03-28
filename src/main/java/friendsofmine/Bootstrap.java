@@ -16,6 +16,7 @@ public class Bootstrap {
     @PostConstruct
     public void init() {
         initialisationService.initDonnees();
+        initialisationService.initInscriptions();
     }
 
     public InitialisationService getInitialisationService() {
