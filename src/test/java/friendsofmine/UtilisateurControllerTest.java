@@ -192,5 +192,34 @@ public class UtilisateurControllerTest {
         assertEquals(count, utilisateurService.countUtilisateur());
     }
 
+    @Test
+    public void testFindUtilisateursFemme() throws Exception {
+        mockMvc.perform(get("/utilisateur/search?sexe=F"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("utilisateurs"))
+                .andExpect(content().string(Matchers.not(Matchers.containsString("<td>M</td>"))))
+                .andDo(print());
+    }
+
+    @Test
+    public void testFindUtilisateursHomme() throws Exception {
+        mockMvc.perform(get("/utilisateur/search?sexe=M"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("utilisateurs"))
+                .andExpect(content().string(Matchers.not(Matchers.containsString("<td>F</td>"))))
+                .andDo(print());
+    }
+
+    @Test
+    public void testFindUtilisateursSexeInconnu() throws Exception {
+        mockMvc.perform(get("/utilisateur/search?sexe=W"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("utilisateurs"))
+                .andDo(print());
+    }
+
 }
 

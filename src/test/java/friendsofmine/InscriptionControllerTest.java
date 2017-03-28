@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -86,6 +87,52 @@ public class InscriptionControllerTest {
                 .andExpect(status().isOk());
 
         assertEquals(count - 1, inscriptionService.countInscription());
+    }
+
+    @Test
+    public void testSearchVide() throws Exception {
+        mockMvc.perform(get("/api/inscription/search"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andDo(print());
+    }
+
+    @Test
+    public void testSearchNomSimple() throws Exception {
+        mockMvc.perform(get("/api/inscription/search?nom_utilisateur=" + bootstrap.getInitialisationService().getThom().getNom()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andDo(print());
+    }
+
+    @Test
+    public void testSearchNomSimpleAvecCasse() throws Exception {
+        mockMvc.perform(get("/api/inscription/search?nom_utilisateur=" + bootstrap.getInitialisationService().getThom().getNom().toUpperCase()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andDo(print());
+    }
+
+    @Test
+    public void testSearchActiviteSimple() throws Exception {
+        mockMvc.perform(get("/api/inscription/search?titre_activite=" + bootstrap.getInitialisationService().getLindyhop().getTitre()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andDo(print());
+    }
+
+    @Test
+    public void testSearchNomEtActivite() throws Exception {
+        mockMvc.perform(get("/api/inscription/search?nom_utilisateur=" + bootstrap.getInitialisationService().getThom().getNom()
+                + "&titre_activite=" + bootstrap.getInitialisationService().getLindyhop().getTitre()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andDo(print());
     }
 
 }

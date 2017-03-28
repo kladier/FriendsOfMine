@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by what on 27/02/17.
@@ -80,5 +79,18 @@ public class UtilisateurController {
         }
         utilisateurService.deleteUtilisateur(user.getId());
         return "redirect:/utilisateurs";
+    }
+
+    @GetMapping("utilisateur/search")
+    public String searchUtilisateurs(@RequestParam(value = "sexe",required = true)String sexe, Model model) {
+        List<Utilisateur> util;
+        if (sexe.equals("M"))
+            util = utilisateurService.findUtilisateursM();
+        else if (sexe.equals("F"))
+            util = utilisateurService.findUtilisateursF();
+        else
+            util = utilisateurService.findAllUtilisateurs();
+        model.addAttribute("utilisateurs", util);
+        return "utilisateurs";
     }
 }
