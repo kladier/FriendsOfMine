@@ -37,11 +37,12 @@ public class InscriptionService {
         return inscriptionRepository.findAll(pageable);
     }
 
-//    public Page<Inscription> findAll(String nom, String titre, Pageable pageable) {
-//        return inscriptionRepository.findByParticipantNomOrActiviteTitreAllIgnoreCase(nom, titre , pageable);
-//    }
+    public Page<Inscription> findAll(String nom, String titre, Pageable pageable) {
+        return inscriptionRepository.findByParticipantNomOrActiviteTitreAllIgnoreCase(nom, titre , pageable);
+    }
 
     public InscriptionRepository getInscriptionRepository() {
         return inscriptionRepository;
     }
+
 }
