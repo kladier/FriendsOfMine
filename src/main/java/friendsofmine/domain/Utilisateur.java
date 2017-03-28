@@ -114,4 +114,30 @@ public class Utilisateur {
         if (!activites.contains(activite))
             activites.add(activite);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Utilisateur that = (Utilisateur) o;
+
+        if (nom != null ? !nom.equals(that.nom) : that.nom != null) return false;
+        if (prenom != null ? !prenom.equals(that.prenom) : that.prenom != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (dateNaissance != null ? !dateNaissance.equals(that.dateNaissance) : that.dateNaissance != null)
+            return false;
+        return sexe != null ? sexe.equals(that.sexe) : that.sexe == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nom != null ? nom.hashCode() : 0;
+        result = 31 * result + (prenom != null ? prenom.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (dateNaissance != null ? dateNaissance.hashCode() : 0);
+        result = 31 * result + (sexe != null ? sexe.hashCode() : 0);
+        return result;
+    }
 }
