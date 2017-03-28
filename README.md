@@ -1,2 +1,3 @@
 # FriendsOfMine
-TP1 J2EE
+TPs J2EE : FriendOfMine
+Spring
